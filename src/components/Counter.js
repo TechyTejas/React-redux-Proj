@@ -1,39 +1,42 @@
+import { useSelector,useDispatch } from 'react-redux';
 import classes from './Counter.module.css';
-import {  useSelector } from 'react-redux/es/hooks/useSelector';
-import { useDispatch } from 'react-redux';
+import { counterActions } from '../Store';
 
 const Counter = () => {
-   //when we use seSelector react redux will automatically sent the subscripton of store to this component
-  const counter = useSelector(state => state.counter);
-  const show = useSelector(state => state.showHandler)
+    const dispatch=useDispatch()
+
+  //when we use seSelector react redux will automatically sent the subscripton of store to this component
+    const counter=useSelector(state=>state.counter.counter);
+
+    const show=useSelector(state=>state.counter.showCounter);
   // the function we pass in useSelector that will executed by react redux which basically tell which data we wanna extract from store
   // we pass function in it a function will recieve the state manage by redux AND return the part of the state which we wanna extract
-  const dispatch = useDispatch();
 
-  const IncrementHandler = () => {
-    dispatch({type : "increment"})
-  }
 
-  const DecrementHandler = () => {
-    dispatch({type : "decrement"})
-  }
-
-  const IncreaseHandler = () => {
-    dispatch({type : "increase" ,amount: 10})
-  }
- 
   const toggleCounterHandler = () => {
-    dispatch({type : "toggle" })
+    dispatch(counterActions.toggleCounter())
   };
+
+  const incrementHandler=()=>{
+        dispatch(counterActions.increment())
+  }
+
+  const increaseHandler=()=>{
+    dispatch(counterActions.increase(10)) 
+  }
+
+  const decrementHandler=()=>{
+    dispatch(counterActions.decrement())
+  }
 
   return (
     <main className={classes.counter}>
       <h1>Redux Counter</h1>
-      {show && <div className={classes.value}>{counter}</div>}
+      {show && <div className={classes.value}> {counter} </div>}
       <div>
-        <button onClick={IncrementHandler}>Increment</button>
-        <button onClick={IncreaseHandler}>Increase by 10</button>
-        <button onClick={DecrementHandler}>Decrement</button>
+        <button onClick={incrementHandler}>Increment</button>
+        <button onClick={increaseHandler}>Increase by 10</button>
+        <button onClick={decrementHandler}>Decrement</button>
       </div>
       <button onClick={toggleCounterHandler}>Toggle Counter</button>
     </main>
